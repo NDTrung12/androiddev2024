@@ -18,14 +18,8 @@ public class WeatherFragment extends Fragment {
         return new WeatherFragment();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_weather, container, false);
-
-        // You can customize the layout here if needed (e.g., programmatically adding views)
-
-        return view;
+        return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 }

@@ -7,25 +7,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- WeatherFragment (Green area) -->
-        <fragment
-            android:id="@+id/weather_fragment"
-            android:name="vn.edu.usth.weather.ForecastFragment"
+        <!-- Container for WeatherFragment -->
+        <FrameLayout
+            android:id="@+id/weatherFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- ForecastFragment (Blue area) -->
-        <fragment
-            android:id="@+id/forecast_fragment"
-            android:name="vn.edu.usth.weather.ForecastFragment"
+        <!-- Container for ForecastFragment -->
+        <FrameLayout
+            android:id="@+id/forecastFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    <androidx.viewpager.widget.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

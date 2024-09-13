@@ -73,7 +73,7 @@ public class ForecastFragment extends Fragment {
         ImageView weatherIcon = new ImageView(getActivity());
         weatherIcon.setImageResource(R.drawable.weathericon); // Replace with your weather icon
         layout.addView(weatherIcon);
-        return layout;
+
         return view;
     }
 }
