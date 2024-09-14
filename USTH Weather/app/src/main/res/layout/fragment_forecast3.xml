@@ -10,12 +10,12 @@
     <TextView
         android:layout_width="504dp"
         android:layout_height="756dp"
-        android:text="Thursday" />
+        android:text="Saturday" />
 
     <ImageView
         android:layout_width="202dp"
         android:layout_height="231dp"
-        android:src="@drawable/weathericon"/>
+        android:src="@drawable/windy"/>
 
     <!-- Blue Forecast Area -->
 
@@ -44,6 +44,9 @@
         android:padding="16dp"
         android:background="#2196F3"/>
 
-
+    <androidx.viewpager.widget.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>
-    

@@ -1,9 +1,7 @@
 package vn.edu.usth.weather;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -63,7 +61,7 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forecast,container,false);
+        View view = inflater.inflate(R.layout.fragment_forecast1,container,false);
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         TextView textView = new TextView(getActivity());
@@ -72,7 +70,7 @@ public class ForecastFragment extends Fragment {
         linearLayout.addView(textView);
         ImageView weatherIcon = new ImageView(getActivity());
         weatherIcon.setImageResource(R.drawable.weathericon); // Replace with your weather icon
-        layout.addView(weatherIcon);
+
 
         return view;
     }
