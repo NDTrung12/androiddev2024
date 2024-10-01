@@ -12,15 +12,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.media.MediaPlayer;
 import android.widget.Toolbar;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import vn.edu.usth.weather.adapter.HomeFragmentPagerAdapter;
 import vn.edu.usth.weather.R;
+import androidx.annotation.NonNull;
 
 public class WeatherActivity extends AppCompatActivity {
     public static final String TAG = "Weather";
+    public static final String NETWORK_RESPONSE = "KEY";
     private MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,32 @@ public class WeatherActivity extends AppCompatActivity {
         Log.i(TAG,"ON_CREATE");
         mediaPlayer = MediaPlayer.create(this,R.raw.music);
         mediaPlayer.start();
+        private void request_network(){
+            final Handler handler = new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(@NonNull Message mess){
+                    String content = mess.getData().getString(NETWORK_RESPONSE);
+                    Toast.makeText(getApplicationContext(),content,Toast.LENGTH_SHORT).show();
+                }
+            };
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putString(NETWORK_RESPONSE,"Request for Network?");
+                    Message mess = new Message();
+                    mess.setData(bundle);
+                    handler.sendMessage(mess);
+                }
+            });
+            thread.start(); 
+        }
+        private void initToolBar(){
         Toolbar toolbar = findViewById(R.id.weather_toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.inflateMenu(R.menu.weather_menu);
@@ -50,7 +80,7 @@ public class WeatherActivity extends AppCompatActivity {
                     Toast.makeText(this,"Refreshing process...",Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemMenuId == R.id.ic_more) {
-                    Intent intent = new Intent(this,PreActivity.class);
+                    Intent intent = new Intent(this, vn.edu.usth.weather.activity.PreActivity.class);
                     startActivity(intent);
                     return true;
                 }else{
@@ -58,7 +88,7 @@ public class WeatherActivity extends AppCompatActivity {
                     return false;
                 }
             });
-        }
+        }}
         private void initViewPager() {
             ViewPager2 pager = findViewById(R.id.pager2);
             //HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), getLifecycle());
