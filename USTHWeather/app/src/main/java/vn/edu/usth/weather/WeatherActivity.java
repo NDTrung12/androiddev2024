@@ -1,133 +1,155 @@
-package vn.edu.usth.weather.activity;
+package vn.edu.usth.weather;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 import android.util.Log;
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.media.MediaPlayer;
-import android.widget.Toolbar;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import vn.edu.usth.weather.adapter.HomeFragmentPagerAdapter;
-import vn.edu.usth.weather.R;
-import androidx.annotation.NonNull;
 
 public class WeatherActivity extends AppCompatActivity {
     public static final String TAG = "Weather";
     public static final String NETWORK_RESPONSE = "KEY";
     private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Remove the EdgeToEdge line, as it is not a valid API class
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
         });
-        Log.i(TAG,"ON_CREATE");
-        mediaPlayer = MediaPlayer.create(this,R.raw.music);
+
+        Log.i(TAG, "ON_CREATE");{
+        new ViewPager();
+        // Initialize and play media
+        mediaPlayer = MediaPlayer.create(this, R.raw.music);
         mediaPlayer.start();
-        private void request_network(){
-            final Handler handler = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(@NonNull Message mess){
-                    String content = mess.getData().getString(NETWORK_RESPONSE);
-                    Toast.makeText(getApplicationContext(),content,Toast.LENGTH_SHORT).show();
-                }
-            };
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                    Bundle bundle = new Bundle();
-                    bundle.putString(NETWORK_RESPONSE,"Request for Network?");
-                    Message mess = new Message();
-                    mess.setData(bundle);
-                    handler.sendMessage(mess);
-                }
-            });
-            thread.start(); 
-        }
-        private void initToolBar(){
-        Toolbar toolbar = findViewById(R.id.weather_toolbar);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.inflateMenu(R.menu.weather_menu);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.setTitle(R.string.app_name);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.setOnMenuItemClickListener(item -> {
-                int itemMenuId =item.getItemId();
-                if(itemMenuId == R.id.ic_refresh){
-                    Toast.makeText(this,"Refreshing process...",Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (itemMenuId == R.id.ic_more) {
-                    Intent intent = new Intent(this, vn.edu.usth.weather.activity.PreActivity.class);
-                    startActivity(intent);
-                    return true;
-                }else{
-                    Toast.makeText(this,"Not found menu item",Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
-        }}
-        private void initViewPager() {
+
+        // Handler and Thread example
+        final Handler handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message mess) {
+                String content = mess.getData().getString(NETWORK_RESPONSE);
+                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Bundle bundle = new Bundle();
+            bundle.putString(NETWORK_RESPONSE, "Request for Network?");
+            Message mess = new Message();
+            mess.setData(bundle);
+            handler.sendMessage(mess);
+        });
+        thread.start();
+
+        // Setup the toolbar
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Toolbar toolbar = findViewById(R.id.weather_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setOnMenuItemClickListener(item -> {
+            int itemMenuId = item.getItemId();
+            if (itemMenuId == R.id.ic_refresh) {
+                Toast.makeText(this, "Refreshing process...", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemMenuId == R.id.ic_more) {
+                Intent intent = new Intent(this, PreActivity.class);
+                startActivity(intent);
+                return true;
+            } else {
+                Toast.makeText(this, "Not found menu item", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        private void ViewPager() {
+            // Setup ViewPager2 and TabLayout
             ViewPager2 pager = findViewById(R.id.pager2);
-            //HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), getLifecycle());
-            HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(this);
+            PagerAdapter adapter = new HomeFragmentPagerAdapter(
+                    getSupportFragmentManager());
+            pager.setOffscreenPageLimit(3);
             pager.setAdapter(adapter);
-            TabLayout tablayout = findViewById(R.id.tab_layout);
-            tablayout.setupWithViewPager(pager);
+
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
             String[] titles = new String[]{"Hanoi, Vietnam", "Paris, France", "Tokyo, Japan"};
-            TabLayoutMediator layoutMediator = new TabLayoutMediator(tablayout, pager,
-                    ((tab, position) -> {
-                        tab.setText(titles[position]);
-                    }));
+            TabLayoutMediator layoutMediator = new TabLayoutMediator(tabLayout, pager,
+                    (tab, position) -> tab.setText(titles[position]));
             layoutMediator.attach();
+        }
+        // AsyncTask example
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<String, Integer, Bitmap> task = new AsyncTask<String, Integer, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+    }
 
-    }}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "ON_START");
+    }
 
-        @Override
-        protected void onStart() {
-            super.onStart();
-            Log.i(TAG, "ON_START");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON_RESUME");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON_PAUSE");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON_STOP");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON_DESTROY");
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
-        @Override
-        protected void onResume() {
-            super.onResume();
-            Log.i(TAG, "ON_RESUME");
-        }
-        @Override
-        protected void onPause() {
-            super.onPause();
-            Log.i(TAG, "ON_PAUSE");
-        }
-        @Override
-        protected void onStop() {
-            super.onStop();
-            Log.i(TAG, "ON_STOP");
-        }
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            Log.i(TAG, "ON_DESTROY");
     }
 }

@@ -26,80 +26,8 @@
         android:layout_gravity="center"
         android:contentDescription="TODO"
         android:src="@drawable/weather"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_bottom_32"
-        android:orientation="horizontal"
-        android:paddingBottom="30dp"
-        tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/monday"
-            android:textColor="#3A3939"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_end_48"
-            android:layout_weight="1"
-            android:contentDescription="@string/weather"
-            android:src="@drawable/rainy"
-            app:tint="#c90e0e" />
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/rainy"
-            android:textColor="#3A3939"
-            android:textSize="16sp"
-            tools:ignore="RtlSymmetry" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="30dp"
-        tools:ignore="UselessParent">
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/tuesday"
-            android:textColor="#3A3939"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="RtlCompat" />
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="48dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/weather"
-            android:src="@drawable/rainy"
-            app:tint="#c90e0e" />
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/rainy"
-            android:textColor="#3A3939"
-            android:textSize="16sp"
-            tools:ignore="RtlSymmetry" />
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -157,7 +85,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/margin_end_48"
             android:layout_weight="1"
-            android:contentDescription="@string/weather"
+            android:contentDescription="@string/windy"
             android:src="@drawable/windy"
             app:tint="#c90e0e" />
         <TextView

@@ -10,4 +10,5 @@
     <color name="teal_700">#FF018786</color>
     <color name="text">#4f4848</color>
     <color name="weather_fragment_bg">#80CBC4</color>
+    <color name="silver">#C0C0C0</color>
 </resources>

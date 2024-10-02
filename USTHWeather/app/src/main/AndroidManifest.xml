@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.USTHWeather"
         tools:targetApi="31">
-        <activity android:name=".activity.PreActivity"
+        <activity android:name=".PreActivity"
             android:exported="false"/>
         <activity
             android:name=".WeatherActivity"
