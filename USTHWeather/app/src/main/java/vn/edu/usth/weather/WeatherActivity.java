@@ -20,7 +20,6 @@ import android.os.Looper;
 import android.os.Message;
 
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -36,15 +35,15 @@ public class WeatherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Remove the EdgeToEdge line, as it is not a valid API class
+        // Set up window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        Log.i(TAG, "ON_CREATE");{
-        new ViewPager();
+        Log.i(TAG, "ON_CREATE");
+
         // Initialize and play media
         mediaPlayer = MediaPlayer.create(this, R.raw.music);
         mediaPlayer.start();
@@ -73,7 +72,7 @@ public class WeatherActivity extends AppCompatActivity {
         thread.start();
 
         // Setup the toolbar
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Toolbar toolbar = findViewById(R.id.weather_toolbar);
+        Toolbar toolbar = findViewById(R.id.weather_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.setOnMenuItemClickListener(item -> {
@@ -86,24 +85,21 @@ public class WeatherActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else {
-                Toast.makeText(this, "Not found menu item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Menu item not found", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
-        private void ViewPager() {
-            // Setup ViewPager2 and TabLayout
-            ViewPager2 pager = findViewById(R.id.pager2);
-            PagerAdapter adapter = new HomeFragmentPagerAdapter(
-                    getSupportFragmentManager());
-            pager.setOffscreenPageLimit(3);
-            pager.setAdapter(adapter);
 
-            TabLayout tabLayout = findViewById(R.id.tab_layout);
-            String[] titles = new String[]{"Hanoi, Vietnam", "Paris, France", "Tokyo, Japan"};
-            TabLayoutMediator layoutMediator = new TabLayoutMediator(tabLayout, pager,
-                    (tab, position) -> tab.setText(titles[position]));
-            layoutMediator.attach();
-        }
+        // Setup ViewPager2 and TabLayout
+        ViewPager2 pager = findViewById(R.id.pager2);
+        PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
+        pager.setOffscreenPageLimit(3);
+
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        String[] titles = new String[]{"Hanoi, Vietnam", "Paris, France", "Tokyo, Japan"};
+        new TabLayoutMediator(tabLayout, pager, (tab, position) -> tab.setText(titles[position])).attach();
+
         // AsyncTask example
         @SuppressLint("StaticFieldLeak")
         AsyncTask<String, Integer, Bitmap> task = new AsyncTask<String, Integer, Bitmap>() {
@@ -114,9 +110,17 @@ public class WeatherActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                return null;
+                return null; // Replace with actual bitmap processing logic
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                // Handle bitmap (if needed)
             }
         };
+
+        task.execute(); // Start the AsyncTask
     }
 
     @Override
@@ -135,6 +139,9 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "ON_PAUSE");
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause(); // Pause music when the activity is not in the foreground
+        }
     }
 
     @Override

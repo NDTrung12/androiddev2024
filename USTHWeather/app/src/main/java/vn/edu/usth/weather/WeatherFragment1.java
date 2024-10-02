@@ -15,7 +15,7 @@ public class WeatherFragment1 extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState){
-        return inflater.inflate(R.layout.weather_fragment,container,false);
+        return inflater.inflate(R.layout.weather_fragment2,container,false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
